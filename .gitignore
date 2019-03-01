@@ -1,0 +1,27 @@
+# Ignore everything
+/*
+/*/
+
+# Except
+!/.git/
+!/Assets/
+!/ProjectSettings/
+!/UnityPackageManager/
+!/UWP_Assets/
+!/WPF/
+!/.gitignore
+!/README.md
+!/Read_Me_Versions_Description.md
+!/Read_Me_Versions_Description.pdf
+
+# Additionally ignore the following
+/Assets/AssetStoreTools*
+*.apk
+*.unitypackage
+
+# Remove obj/bin from subprojects
+**/[Oo]bj/
+**/[Bb]in/
+**/[Pp]ackges/
+
+
