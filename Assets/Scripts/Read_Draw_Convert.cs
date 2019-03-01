@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 
 public class Read_Draw_Convert : MonoBehaviour
 {
@@ -52,7 +53,7 @@ public class Read_Draw_Convert : MonoBehaviour
             constructed3DFace.transform.SetParent(this.transform);
 
             //Take Screenshot of the Scene
-            ScreenCapture.CaptureScreenshot(path.Replace(".wrl", ".png"));
+            ScreenCapture.CaptureScreenshot(path.Replace(".wrl", ".png"), 10);
         }
     }
 
@@ -211,6 +212,16 @@ public class Read_Draw_Convert : MonoBehaviour
         face3D.GetComponent<MeshFilter>().mesh.vertices = fileData.Points.ToArray();
         face3D.GetComponent<MeshFilter>().mesh.uv = fileData.Texture_Points.ToArray();
         face3D.GetComponent<MeshFilter>().mesh.triangles = fileData.Points_Index.ToArray();
+        float max = fileData.Points.Select(S => S.z).Max();
+        float min = fileData.Points.Select(S => S.z).Min();
+        float depth = Math.Abs(max - min)*1f;
+        Color[] colors = new Color[fileData.Points.ToArray().Length];
+
+        for (int i = 0; i < fileData.Points.ToArray().Length; i++)
+            colors[i] = Color.Lerp(Color.black, Color.white, Math.Abs((fileData.Points[i].z - min)/depth));
+
+        // assign the array of colors to the Mesh.
+        face3D.GetComponent<MeshFilter>().mesh.colors = colors;
 
         face3D.GetComponent<MeshFilter>().mesh.RecalculateNormals();
 
